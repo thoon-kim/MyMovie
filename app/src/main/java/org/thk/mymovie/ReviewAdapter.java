@@ -1,5 +1,6 @@
 package org.thk.mymovie;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +41,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
 
     public void addItem(Review item) {
         items.add(item);
+        Log.d("R.A", item.toString());
     }
 
     public void setItems(ArrayList<Review> items) {

@@ -35,7 +35,6 @@ public class MovieRepo {
         @SerializedName("actor") String actor; // 배우
         @SerializedName("like") int like; // 좋아요 수
         @SerializedName("dislike") int dislike; // 싫어요 수
-
         @SerializedName("writer") String writer;
         @SerializedName("review_id") String review_id;
         @SerializedName("time") String time;
@@ -70,18 +69,17 @@ public class MovieRepo {
 
         @Override
         public String toString() {
-            return "Movie {" +
+            return "Movie{" +
                     "id=" + id +
                     ", title='" + title + '\'' +
                     ", reservation_grade=" + reservation_grade +
                     ", reservation_rate=" + reservation_rate +
-                    ", grade='" + grade + '\'' +
+                    ", grade=" + grade +
                     ", date='" + date + '\'' +
                     ", thumb='" + thumb + '\'' +
                     ", image='" + image + '\'' +
                     ", audience_rating=" + audience_rating +
                     ", genre='" + genre + '\'' +
-
                     ", duration=" + duration +
                     ", audience=" + audience +
                     ", synopsis='" + synopsis + '\'' +
@@ -89,6 +87,12 @@ public class MovieRepo {
                     ", actor='" + actor + '\'' +
                     ", like=" + like +
                     ", dislike=" + dislike +
+                    ", writer='" + writer + '\'' +
+                    ", review_id='" + review_id + '\'' +
+                    ", time='" + time + '\'' +
+                    ", rating=" + rating +
+                    ", contents='" + contents + '\'' +
+                    ", recommend=" + recommend +
                     '}';
         }
     }

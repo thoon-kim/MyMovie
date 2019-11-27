@@ -339,11 +339,11 @@
                     android:id="@+id/imageView"
                     android:layout_width="wrap_content"
                     android:layout_height="20dp"
-                    android:layout_toLeftOf="@+id/btnWrite"
+                    android:layout_toLeftOf="@+id/btnReviewWrite"
                     app:srcCompat="@drawable/ic_review_selected" />
 
                 <TextView
-                    android:id="@+id/btnWrite"
+                    android:id="@+id/btnReviewWrite"
                     android:layout_width="wrap_content"
                     android:layout_height="20dp"
                     android:layout_alignParentRight="true"
@@ -358,10 +358,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:layout_below="@+id/btnWrite"/>
+                    android:layout_below="@+id/btnReviewWrite"/>
 
                 <TextView
-                    android:id="@+id/viewAll"
+                    android:id="@+id/btnReviewList"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginBottom="5dp"

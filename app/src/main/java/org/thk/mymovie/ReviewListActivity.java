@@ -1,8 +1,12 @@
 package org.thk.mymovie;
 
+import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -11,16 +15,34 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ReviewListActivity extends AppCompatActivity {
     TextView textTitle;
     ImageView imgGrade;
-    FrameLayout container_review;
-    RelativeLayout reviewWrite;
+    RecyclerView reviewList;
     TextView btnWrite;
 
-    private ReviewWrite layout_reviewWrite;
-    private ReviewView layout_reviewView;
+    MovieThread movieThread;
+    ReviewAdapter adapter;
+
+    private int id;
+    private String title, grade;
+
+//    private ReviewWrite layout_reviewWrite;
+//    private ReviewView layout_reviewView;
 
     public static final String DBNAME = "review_movie.db";
     public static final String TBNAME = "review";
@@ -33,15 +55,19 @@ public class ReviewListActivity extends AppCompatActivity {
 
         textTitle = findViewById(R.id.textTitle);
         imgGrade = findViewById(R.id.imageGrade);
-
-        container_review = (FrameLayout)findViewById(R.id.container_review);
+        reviewList = findViewById(R.id.reviewList);
+        btnWrite = findViewById(R.id.btnWrite);
 
 //        database = openOrCreateDatabase(DBNAME, MODE_PRIVATE, null);
 
         Bundle bundle = getIntent().getExtras();
 
-        textTitle.setText(bundle.getString("title"));
-        switch (bundle.getString("grade")) {
+        id = bundle.getInt("id");
+        title = bundle.getString("title");
+        grade = bundle.getString("grade");
+
+        textTitle.setText(title);
+        switch (grade) {
             case "12":
                 imgGrade.setImageResource(R.drawable.ic_12);
                 break;
@@ -55,58 +81,78 @@ public class ReviewListActivity extends AppCompatActivity {
                 imgGrade.setImageResource(R.drawable.ic_all);
                 break;
         }
+        adapter = new ReviewAdapter();
+        movieThread = new MovieThread(this, new Handler());
+        movieThread.getComments(id, "all");
 
-//        reviewWrite = findViewById(R.id.reviewWrite);
-//        btnWrite = findViewById(R.id.btnWrite);
-//
-//        if (bundle.getString("type").equals("write")) {
-//            showReviewWrite(true);
-//        } else if (bundle.getString("type").equals("view")) {
-//            showReviewView(true);
-//        }
-//
-//        btnWrite.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                showReviewView(false);
-//                showReviewWrite(true);
-//            }
-//        });
+        btnWrite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ReviewListActivity.this, ReviewWriteActivity.class);
+                intent.putExtra("id", id);
+                intent.putExtra("title", title);
+                intent.putExtra("grade", grade);
+                startActivity(intent);
+            }
+        });
     }
 
-    public boolean showReviewWrite(final boolean isShow) {
-        setTitle("한줄평 작성");
-        reviewWrite.setVisibility(View.GONE);
-        if (isShow) {
-            if (layout_reviewWrite != null) return false;
-            layout_reviewWrite = new ReviewWrite(container_review.getContext());
-            container_review.addView(layout_reviewWrite);
-            layout_reviewWrite.init(database, textTitle.getText().toString());
-        } else {
-            if (layout_reviewWrite == null) return false;
-            container_review.removeView(layout_reviewWrite);
-//            layout_reviewWrite.destroy();
-            layout_reviewWrite = null;
-        }
-        return true;
-    }
+    public class MovieThread extends Thread {
+        final static String TAG = "MDF / MovieThread";
+        Context mContext;
+        MovieRepo movieRepo;
+        Handler handler;
 
-    public boolean showReviewView(final boolean isShow) {
-        reviewWrite.setVisibility(View.VISIBLE);
-        if (isShow) {
-            if (layout_reviewView != null) return false;
-            layout_reviewView = new ReviewView(container_review.getContext());
-            container_review.addView(layout_reviewView);
-            String sql = "select title, id, date, rating, comment from " + TBNAME + " where title = \'" + textTitle.getText().toString() + "\'";
-            Cursor cursor = database.rawQuery(sql, null);
-            layout_reviewView.init(database, textTitle.getText().toString(), cursor);
-//            layout_reviewView.getReviews();
-        } else {
-            if (layout_reviewView == null) return false;
-            container_review.removeView(layout_reviewView);
-//            layout_reviewView.destroy();
-            layout_reviewView = null;
+        public MovieThread(Context mContext, Handler handler) {
+            this.mContext = mContext;
+            this.handler = handler;
         }
-        return true;
+
+        public void getComments(int id, final String limit) {
+            super.run();
+            Retrofit client = new Retrofit.Builder().baseUrl("http://boostcourse-appapi.connect.or.kr:10000/movie/")
+                    .addConverterFactory(GsonConverterFactory.create()).build();
+            MovieRepo.MovieListInterface service = client.create(MovieRepo.MovieListInterface.class);
+            Call<MovieRepo> call = service.getComments(id, limit);
+
+            call.enqueue(new Callback<MovieRepo>() {
+                @Override
+                public void onResponse(Call<MovieRepo> call, Response<MovieRepo> response) {
+                    if(response.isSuccessful()) {
+                        movieRepo = response.body();
+                        Log.d(TAG, "response.raw : " + response.raw());
+
+                        if(movieRepo.getCode() == 200) {
+                            Log.d(TAG, "reviewItems size : " + String.valueOf(movieRepo.getResults().size()));
+
+                            for(int i = 0; i < movieRepo.getResults().size(); i++){
+                                String writer = movieRepo.getResults().get(i).getWriter();
+                                String time = movieRepo.getResults().get(i).getTime();
+                                float rating = movieRepo.getResults().get(i).getRating();
+                                String contents = movieRepo.getResults().get(i).getContents();
+                                int recommend = movieRepo.getResults().get(i).getRecommend();
+//                                Log.d(TAG, "Review + " + i + " : " + String.valueOf(movieRepo.getResults().get(i).toString()));
+
+                                Log.d(TAG, "Review " + i + " : " + "writer : " + writer + ", time : " + time +
+                                        ", rating : " + rating + ", contents : " + contents + ", recommend : " + recommend);
+
+                                adapter.addItem(new Review(writer, time, rating, contents, recommend));
+                            }
+                            reviewList.setAdapter(adapter);
+
+                        } else {
+                            Log.e(TAG, "요청 실패 : " + movieRepo.getCode());
+                            Log.e(TAG, "메시지 : " + movieRepo.getMessage());
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<MovieRepo> call, Throwable t) {
+                    Log.e(TAG, "영화정보 불러오기 실패 : " + t.getMessage());
+                    Log.e(TAG, "요청 메시지 : " + call.request());
+                }
+            });
+        }
     }
 }

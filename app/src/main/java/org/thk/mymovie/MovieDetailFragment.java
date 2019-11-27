@@ -2,8 +2,6 @@ package org.thk.mymovie;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -12,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -21,8 +18,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.ViewTarget;
-
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -43,8 +38,8 @@ public class MovieDetailFragment extends Fragment {
 
     RatingBar ratingBar;
     ImageButton btnLike, btnDislike;
-    TextView btnWrite, viewAll;
-    ListView listView;
+    TextView btnReviewWrite, btnReviewList;
+
     Intent intent;
 
     MovieThread movieThread;
@@ -69,6 +64,7 @@ public class MovieDetailFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_movie_detail, container, false);
+        getActivity().setTitle("영화 상세");
 
         id = getArguments().getInt("id");
 
@@ -92,21 +88,18 @@ public class MovieDetailFragment extends Fragment {
 
         btnLike = root.findViewById(R.id.btnLike);
         btnDislike = root.findViewById(R.id.btnDislike);
-//        btnWrite = root.findViewById(R.id.btnWrite);
-//        viewAll = root.findViewById(R.id.viewAll);
+        btnReviewWrite = root.findViewById(R.id.btnReviewWrite);
+        btnReviewList = root.findViewById(R.id.btnReviewList);
 //        btnBook = root.findViewById(R.id.book);
-//
+
         recyclerView = root.findViewById(R.id.reviewPreveal);
         movieThread.getComments(id, "2");
 
-//
         btnLike.setOnClickListener(iListener);
         btnDislike.setOnClickListener(iListener);
-//        btnWrite.setOnClickListener(iListener);
-//        viewAll.setOnClickListener(iListener);
+        btnReviewWrite.setOnClickListener(iListener);
+        btnReviewList.setOnClickListener(iListener);
 //        btnBook.setOnClickListener(iListener);
-//
-//        getReviews();
 
         return root;
     }
@@ -140,14 +133,14 @@ public class MovieDetailFragment extends Fragment {
                         setNum(btnDislike, true, textDislike, 1);
                     }
                     break;
-                case R.id.btnWrite:
-//                    intent = new Intent(getApplicationContext(), ReviewListActivity.class);
-//                    intent.putExtra("title", textTitle.getText());
-//                    intent.putExtra("rating", "15");
-//                    intent.putExtra("type", "write");
-//                    startActivityForResult(intent, 101);
+                case R.id.btnReviewWrite:
+                    Intent intent = new Intent(getContext(), ReviewWriteActivity.class);
+                    intent.putExtra("id", id);
+                    intent.putExtra("title", textTitle.getText().toString());
+                    intent.putExtra("grade", grade);
+                    startActivity(intent);
                     break;
-                case R.id.viewAll:
+                case R.id.btnReviewList:
                     intent = new Intent(getContext(), ReviewListActivity.class);
                     intent.putExtra("id", id);
                     intent.putExtra("title", textTitle.getText().toString());
@@ -157,7 +150,6 @@ public class MovieDetailFragment extends Fragment {
                 case R.id.book:
                     break;
             }
-
         }
     }
 
