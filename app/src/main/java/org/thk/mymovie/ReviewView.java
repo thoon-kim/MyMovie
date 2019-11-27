@@ -53,23 +53,23 @@ public class ReviewView extends LinearLayout {
         }
     }
 
-    public void getReviews(){
-        adapter = new ReviewAdapter();
-
-        int recordCount = cursor.getCount();
-
-        for(int i = 0; i < recordCount; i++){
-            cursor.moveToNext();
-            String title = cursor.getString(0);
-            String id = cursor.getString(1);
-            String date = cursor.getString(2);
-            String rating = cursor.getString(3);
-            String comment = cursor.getString(4);
-            adapter.addItem(new Review(title, id, date, rating, comment));
-        }
-
-        cursor.close();
-
-        recyclerView.setAdapter(adapter);
-    }
+//    public void getReviews(){
+//        adapter = new ReviewAdapter();
+//
+//        int recordCount = cursor.getCount();
+//
+//        for(int i = 0; i < recordCount; i++){
+//            cursor.moveToNext();
+//            String title = cursor.getString(0);
+//            String id = cursor.getString(1);
+//            String date = cursor.getString(2);
+//            String rating = cursor.getString(3);
+//            String comment = cursor.getString(4);
+//            adapter.addItem(new Review(title, id, date, rating, comment));
+//        }
+//
+//        cursor.close();
+//
+//        recyclerView.setAdapter(adapter);
+//    }
 }

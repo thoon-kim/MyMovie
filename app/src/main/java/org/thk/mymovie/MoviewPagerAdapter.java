@@ -1,5 +1,7 @@
 package org.thk.mymovie;
 
+import android.util.Log;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
@@ -13,9 +15,7 @@ public class MoviewPagerAdapter extends FragmentStatePagerAdapter {
         super(fm);
     }
 
-    public void addItem(Fragment item) {
-        items.add(item);
-    }
+    public void addItem(Fragment item) { items.add(item); }
 
     @Override
     public Fragment getItem(int position) {

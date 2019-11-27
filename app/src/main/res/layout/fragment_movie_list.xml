@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/thumbnail_base" >
+    android:background="@drawable/thumbnail_base"
+    android:id="@+id/fragment_movie_list">
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/pager"
@@ -13,7 +14,7 @@
         android:paddingEnd="40dp" />
 
     <Button
-        android:id="@+id/movieInfo"
+        android:id="@+id/movieDetail"
         android:layout_width="150dp"
         android:layout_height="50dp"
         android:text="상세보기"

@@ -12,7 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
 
-        <activity android:name=".MovieListActivity" >
+        <activity android:name=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,12 +22,7 @@
 
         </activity>
 
-        <activity android:name=".MainActivity"
-            android:label="영화 상세">
-
-        </activity>
-
-        <activity android:name=".ReviewActivity"
+        <activity android:name=".ReviewListActivity"
             android:label="한줄평 목록" >
         </activity>
 

@@ -1,6 +1,5 @@
 package org.thk.mymovie;
 
-import android.app.Activity;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -13,10 +12,9 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class ReviewActivity extends AppCompatActivity {
+public class ReviewListActivity extends AppCompatActivity {
     TextView textTitle;
-    ImageView imgRating;
-    String rating;
+    ImageView imgGrade;
     FrameLayout container_review;
     RelativeLayout reviewWrite;
     TextView btnWrite;
@@ -31,51 +29,49 @@ public class ReviewActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_review);
+        setContentView(R.layout.activity_review_list);
 
         textTitle = findViewById(R.id.textTitle);
-        imgRating = findViewById(R.id.imgRating);
+        imgGrade = findViewById(R.id.imageGrade);
 
         container_review = (FrameLayout)findViewById(R.id.container_review);
 
-        database = openOrCreateDatabase(DBNAME, MODE_PRIVATE, null);
+//        database = openOrCreateDatabase(DBNAME, MODE_PRIVATE, null);
 
         Bundle bundle = getIntent().getExtras();
 
         textTitle.setText(bundle.getString("title"));
-        rating = bundle.getString("rating");
-
-        switch (rating) {
+        switch (bundle.getString("grade")) {
             case "12":
-                imgRating.setImageResource(R.drawable.ic_12);
+                imgGrade.setImageResource(R.drawable.ic_12);
                 break;
             case "15":
-                imgRating.setImageResource(R.drawable.ic_15);
+                imgGrade.setImageResource(R.drawable.ic_15);
                 break;
             case "19":
-                imgRating.setImageResource(R.drawable.ic_19);
+                imgGrade.setImageResource(R.drawable.ic_19);
                 break;
             case "all":
-                imgRating.setImageResource(R.drawable.ic_all);
+                imgGrade.setImageResource(R.drawable.ic_all);
                 break;
         }
 
-        reviewWrite = findViewById(R.id.reviewWrite);
-        btnWrite = findViewById(R.id.btnWrite);
-
-        if (bundle.getString("type").equals("write")) {
-            showReviewWrite(true);
-        } else if (bundle.getString("type").equals("view")) {
-            showReviewView(true);
-        }
-
-        btnWrite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showReviewView(false);
-                showReviewWrite(true);
-            }
-        });
+//        reviewWrite = findViewById(R.id.reviewWrite);
+//        btnWrite = findViewById(R.id.btnWrite);
+//
+//        if (bundle.getString("type").equals("write")) {
+//            showReviewWrite(true);
+//        } else if (bundle.getString("type").equals("view")) {
+//            showReviewView(true);
+//        }
+//
+//        btnWrite.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                showReviewView(false);
+//                showReviewWrite(true);
+//            }
+//        });
     }
 
     public boolean showReviewWrite(final boolean isShow) {
@@ -104,7 +100,7 @@ public class ReviewActivity extends AppCompatActivity {
             String sql = "select title, id, date, rating, comment from " + TBNAME + " where title = \'" + textTitle.getText().toString() + "\'";
             Cursor cursor = database.rawQuery(sql, null);
             layout_reviewView.init(database, textTitle.getText().toString(), cursor);
-            layout_reviewView.getReviews();
+//            layout_reviewView.getReviews();
         } else {
             if (layout_reviewView == null) return false;
             container_review.removeView(layout_reviewView);

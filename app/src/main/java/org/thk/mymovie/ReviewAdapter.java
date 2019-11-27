@@ -1,6 +1,5 @@
 package org.thk.mymovie;
 
-import android.media.Rating;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,27 +55,27 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView reviewId;
-        TextView reviewDate;
+        TextView textWriter;
+        TextView textTime;
         RatingBar reviewRating;
-        TextView reviewComment;
-        TextView reviewLike;
+        TextView textContent;
+        TextView textRecommend;
 
         public ViewHolder(View itemView){
             super(itemView);
-            reviewId = itemView.findViewById(R.id.reviewId);
-            reviewDate = itemView.findViewById(R.id.reviewDate);
-            reviewRating = itemView.findViewById(R.id.reviewRating);
-            reviewComment = itemView.findViewById(R.id.reviewComment);
-            reviewLike = itemView.findViewById(R.id.reviewLike);
+            textWriter = itemView.findViewById(R.id.textWriter);
+            textTime = itemView.findViewById(R.id.textTime);;
+            reviewRating = itemView.findViewById(R.id.reviewRating);;
+            textContent = itemView.findViewById(R.id.textContent);;
+            textRecommend = itemView.findViewById(R.id.textRecommend);;
         }
 
         public void setItem(Review item){
-            reviewId.setText(String.valueOf(item.getId()));
-            reviewDate.setText(item.getDate());
-            reviewRating.setRating(Float.valueOf(item.getRating()));
-            reviewComment.setText(item.getComment());
-            reviewLike.setText(String.valueOf(item.getLike()));
+            textWriter.setText(String.valueOf(item.getWriter()));
+            textTime.setText(item.getTime());
+            reviewRating.setRating(item.getRating() / 2);
+            textContent.setText(item.getContents());
+            textRecommend.setText(String.valueOf(item.getRecommend()));
         }
     }
 }
