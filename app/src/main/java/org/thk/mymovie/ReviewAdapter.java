@@ -12,11 +12,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+import org.thk.mymovie.ReviewRepo.Review;
+
 public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder> {
     public ArrayList<Review> items;
 
     public ReviewAdapter() {
-        items = new ArrayList<Review>();
+        items = new ArrayList<>();
     }
 
     @NonNull
@@ -39,10 +41,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
         return items.size();
     }
 
-    public void addItem(Review item) {
-        items.add(item);
-        Log.d("R.A", item.toString());
-    }
+    public void addItem(Review item) { items.add(item); }
 
     public void setItems(ArrayList<Review> items) {
         this.items = items;

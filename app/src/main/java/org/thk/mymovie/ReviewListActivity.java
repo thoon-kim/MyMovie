@@ -15,8 +15,10 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.thk.mymovie.ReviewRepo.Review;
 import com.bumptech.glide.Glide;
 
 import java.text.ParseException;
@@ -35,7 +37,7 @@ public class ReviewListActivity extends AppCompatActivity {
     RecyclerView reviewList;
     TextView btnWrite;
 
-    MovieThread movieThread;
+//    MovieThread movieThread;
     ReviewAdapter adapter;
 
     private int id;
@@ -44,8 +46,6 @@ public class ReviewListActivity extends AppCompatActivity {
 //    private ReviewWrite layout_reviewWrite;
 //    private ReviewView layout_reviewView;
 
-    public static final String DBNAME = "review_movie.db";
-    public static final String TBNAME = "review";
     SQLiteDatabase database;
 
     @Override
@@ -81,9 +81,9 @@ public class ReviewListActivity extends AppCompatActivity {
                 imgGrade.setImageResource(R.drawable.ic_all);
                 break;
         }
-        adapter = new ReviewAdapter();
-        movieThread = new MovieThread(this, new Handler());
-        movieThread.getComments(id, "all");
+        reviewList.setLayoutManager(new LinearLayoutManager(this));
+//        movieThread = new MovieThread(this, new Handler());
+//        movieThread.getComments(id, "all");
 
         btnWrite.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,62 +97,62 @@ public class ReviewListActivity extends AppCompatActivity {
         });
     }
 
-    public class MovieThread extends Thread {
-        final static String TAG = "MDF / MovieThread";
-        Context mContext;
-        MovieRepo movieRepo;
-        Handler handler;
-
-        public MovieThread(Context mContext, Handler handler) {
-            this.mContext = mContext;
-            this.handler = handler;
-        }
-
-        public void getComments(int id, final String limit) {
-            super.run();
-            Retrofit client = new Retrofit.Builder().baseUrl("http://boostcourse-appapi.connect.or.kr:10000/movie/")
-                    .addConverterFactory(GsonConverterFactory.create()).build();
-            MovieRepo.MovieListInterface service = client.create(MovieRepo.MovieListInterface.class);
-            Call<MovieRepo> call = service.getComments(id, limit);
-
-            call.enqueue(new Callback<MovieRepo>() {
-                @Override
-                public void onResponse(Call<MovieRepo> call, Response<MovieRepo> response) {
-                    if(response.isSuccessful()) {
-                        movieRepo = response.body();
-                        Log.d(TAG, "response.raw : " + response.raw());
-
-                        if(movieRepo.getCode() == 200) {
-                            Log.d(TAG, "reviewItems size : " + String.valueOf(movieRepo.getResults().size()));
-
-                            for(int i = 0; i < movieRepo.getResults().size(); i++){
-                                String writer = movieRepo.getResults().get(i).getWriter();
-                                String time = movieRepo.getResults().get(i).getTime();
-                                float rating = movieRepo.getResults().get(i).getRating();
-                                String contents = movieRepo.getResults().get(i).getContents();
-                                int recommend = movieRepo.getResults().get(i).getRecommend();
-//                                Log.d(TAG, "Review + " + i + " : " + String.valueOf(movieRepo.getResults().get(i).toString()));
-
-                                Log.d(TAG, "Review " + i + " : " + "writer : " + writer + ", time : " + time +
-                                        ", rating : " + rating + ", contents : " + contents + ", recommend : " + recommend);
-
-                                adapter.addItem(new Review(writer, time, rating, contents, recommend));
-                            }
-                            reviewList.setAdapter(adapter);
-
-                        } else {
-                            Log.e(TAG, "요청 실패 : " + movieRepo.getCode());
-                            Log.e(TAG, "메시지 : " + movieRepo.getMessage());
-                        }
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<MovieRepo> call, Throwable t) {
-                    Log.e(TAG, "영화정보 불러오기 실패 : " + t.getMessage());
-                    Log.e(TAG, "요청 메시지 : " + call.request());
-                }
-            });
-        }
-    }
+//    public class MovieThread extends Thread {
+//        final static String TAG = "MDF / MovieThread";
+//        Context mContext;
+//        MovieRepo movieRepo;
+//        Handler handler;
+//
+//        public MovieThread(Context mContext, Handler handler) {
+//            this.mContext = mContext;
+//            this.handler = handler;
+//        }
+//
+//        public void getComments(int id, final String limit) {
+//            super.run();
+//            Retrofit client = new Retrofit.Builder().baseUrl("http://boostcourse-appapi.connect.or.kr:10000/movie/")
+//                    .addConverterFactory(GsonConverterFactory.create()).build();
+//            MovieRepo.MovieListInterface service = client.create(MovieRepo.MovieListInterface.class);
+//            Call<MovieRepo> call = service.getComments(id, limit);
+//
+//            call.enqueue(new Callback<MovieRepo>() {
+//                @Override
+//                public void onResponse(Call<MovieRepo> call, Response<MovieRepo> response) {
+//                    if(response.isSuccessful()) {
+//                        movieRepo = response.body();
+//                        Log.d(TAG, "response.raw : " + response.raw());
+//
+//                        if(movieRepo.getCode() == 200) {
+//                            Log.d(TAG, "reviewItems size : " + String.valueOf(movieRepo.getResults().size()));
+//                            adapter = new ReviewAdapter();
+//                            for(int i = 0; i < movieRepo.getResults().size(); i++){
+//                                String writer = movieRepo.getResults().get(i).getWriter();
+//                                String time = movieRepo.getResults().get(i).getTime();
+//                                float rating = movieRepo.getResults().get(i).getRating();
+//                                String contents = movieRepo.getResults().get(i).getContents();
+//                                int recommend = movieRepo.getResults().get(i).getRecommend();
+////                                Log.d(TAG, "Review + " + i + " : " + String.valueOf(movieRepo.getResults().get(i).toString()));
+//
+//                                Log.d(TAG, "Review " + i + " : " + "writer : " + writer + ", time : " + time +
+//                                        ", rating : " + rating + ", contents : " + contents + ", recommend : " + recommend);
+//
+//                                adapter.addItem(new Review(writer, time, rating, contents, recommend));
+//                            }
+//                            reviewList.setAdapter(adapter);
+//
+//                        } else {
+//                            Log.e(TAG, "요청 실패 : " + movieRepo.getCode());
+//                            Log.e(TAG, "메시지 : " + movieRepo.getMessage());
+//                        }
+//                    }
+//                }
+//
+//                @Override
+//                public void onFailure(Call<MovieRepo> call, Throwable t) {
+//                    Log.e(TAG, "영화정보 불러오기 실패 : " + t.getMessage());
+//                    Log.e(TAG, "요청 메시지 : " + call.request());
+//                }
+//            });
+//        }
+//    }
 }

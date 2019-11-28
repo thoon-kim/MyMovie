@@ -17,7 +17,7 @@ public class MovieRepo {
     List<Movie> movies = new ArrayList<>();
 
     public List<Movie> getResults() { return movies; }
-    public class Movie {
+    public static class Movie {
         @SerializedName("id") int id; // id
         @SerializedName("title") String title; // 제목
         @SerializedName("reservation_grade") int reservation_grade; // 예매 순위
@@ -35,12 +35,34 @@ public class MovieRepo {
         @SerializedName("actor") String actor; // 배우
         @SerializedName("like") int like; // 좋아요 수
         @SerializedName("dislike") int dislike; // 싫어요 수
-        @SerializedName("writer") String writer;
-        @SerializedName("review_id") String review_id;
-        @SerializedName("time") String time;
-        @SerializedName("rating") float rating;
-        @SerializedName("contents") String contents;
-        @SerializedName("recommend") int recommend;
+
+        public Movie(int id, String title, float reservation_rate, int grade, String date, String thumb, int reservation_grade, float audience_rating,
+                String genre, int duration, int audience, String synopsis, String director, String actor, int like, int dislike) {
+            this.id = id;
+            this.title = title;
+            this.reservation_rate = reservation_rate;
+            this.grade = grade;
+            this.thumb = thumb;
+            this.reservation_grade = reservation_grade;
+            this.audience_rating = audience_rating;
+            this.genre = genre;
+            this.duration = duration;
+            this. audience = audience;
+            this.synopsis = synopsis;
+            this.director = director;
+            this.actor = actor;
+            this.like = like;
+            this.dislike = dislike;
+        }
+
+        public Movie(int id, String title, float reservation_rate, int grade, String date, String image) {
+            this.id = id;
+            this.title = title;
+            this.reservation_rate = reservation_rate;
+            this.grade = grade;
+            this.date = date;
+            this.image = image;
+        }
 
         public int getId() { return id; }
         public String getTitle() { return title; }
@@ -59,13 +81,6 @@ public class MovieRepo {
         public String getActor() { return actor; }
         public int getLike() { return like; }
         public int getDislike() { return dislike; }
-
-        public String getWriter() { return writer; }
-        public String getReview_id() { return review_id; }
-        public String getTime() { return time; }
-        public float getRating() { return rating; }
-        public String getContents() { return contents; }
-        public int getRecommend() { return recommend; }
 
         @Override
         public String toString() {
@@ -87,12 +102,6 @@ public class MovieRepo {
                     ", actor='" + actor + '\'' +
                     ", like=" + like +
                     ", dislike=" + dislike +
-                    ", writer='" + writer + '\'' +
-                    ", review_id='" + review_id + '\'' +
-                    ", time='" + time + '\'' +
-                    ", rating=" + rating +
-                    ", contents='" + contents + '\'' +
-                    ", recommend=" + recommend +
                     '}';
         }
     }
@@ -104,14 +113,11 @@ public class MovieRepo {
         return message;
     }
 
-    public interface MovieListInterface {
+    public interface movieInterface {
         @GET("readMovieList")
         Call<MovieRepo> getMovieList(@Query("type") int type);
 
         @GET("readMovie")
         Call<MovieRepo> getMovieDetail(@Query("id") int id);
-
-        @GET("readCommentList")
-        Call<MovieRepo> getComments(@Query("id") int id, @Query("limit") String limit);
     }
 }
