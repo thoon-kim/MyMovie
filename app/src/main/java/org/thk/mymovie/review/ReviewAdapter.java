@@ -1,6 +1,5 @@
-package org.thk.mymovie;
+package org.thk.mymovie.review;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-import org.thk.mymovie.ReviewRepo.Review;
+import org.thk.mymovie.R;
+import org.thk.mymovie.review.ReviewRepo.Review;
 
 public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder> {
     public ArrayList<Review> items;

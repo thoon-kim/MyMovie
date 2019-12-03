@@ -7,25 +7,31 @@
 
     <fragment
         android:id="@+id/nav_movie_list"
-        android:name="org.thk.mymovie.MovieListFragment"
+        android:name="org.thk.mymovie.movie.MovieListFragment"
         android:label="@string/menu_movie_list"
         tools:layout="@layout/fragment_movie_list" />
 
+    <fragment
+        android:id="@+id/nav_movie_detail"
+        android:name="org.thk.mymovie.movie.MovieDetailFragment"
+        android:label="@string/menu_movie_detail"
+        tools:layout="@layout/fragment_movie_detail" />
+
 <!--    <fragment-->
 <!--        android:id="@+id/nav_movie_api"-->
-<!--        android:name="org.thk.mymovie.MovieDetailFragment"-->
+<!--        android:name="org.thk.mymovie.movie.MovieDetailFragment"-->
 <!--        android:label="@string/menu_movie_api"-->
 <!--        tools:layout="@layout/fragment_movie_detail" />-->
 
 <!--    <fragment-->
 <!--        android:id="@+id/nav_movie_book"-->
-<!--        android:name="org.thk.mymovie.MovieItemFragment"-->
+<!--        android:name="org.thk.mymovie.movie.MovieItemFragment"-->
 <!--        android:label="@string/menu_movie_book"-->
 <!--        tools:layout="@layout/fragment_movie_item" />-->
 
 <!--    <fragment-->
 <!--        android:id="@+id/nav_settings"-->
-<!--        android:name="org.thk.mymovie.MovieItemFragment"-->
+<!--        android:name="org.thk.mymovie.movie.MovieItemFragment"-->
 <!--        android:label="@string/menu_settings"-->
 <!--        tools:layout="@layout/fragment_movie_item" />-->
 

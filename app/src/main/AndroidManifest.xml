@@ -13,19 +13,32 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".SplashActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity android:name=".ReviewListActivity"
-            android:label="한줄평 목록" >
+        <activity android:name=".MainActivity"
+            android:label="영화 목록"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
-        <activity android:name=".ReviewWriteActivity"
-            android:label="한줄평 작성" >
+        <activity android:name=".review.ReviewListActivity"
+            android:label="한줄평 목록"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+        <activity android:name=".review.ReviewWriteActivity"
+            android:label="한줄평 작성"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+        <activity android:name=".gallery.GalleryActivity"
+            android:label="사진 보기"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
     </application>

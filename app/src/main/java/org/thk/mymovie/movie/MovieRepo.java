@@ -1,4 +1,4 @@
-package org.thk.mymovie;
+package org.thk.mymovie.movie;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -24,8 +24,10 @@ public class MovieRepo {
         @SerializedName("reservation_rate") float reservation_rate; // 예매율
         @SerializedName("grade") int grade; // 관람 등급
         @SerializedName("date") String date; // 개봉일
-        @SerializedName("thumb") String thumb; // 이미지 url
+        @SerializedName("thumb") String thumb; // 썸네일 이미지 url
         @SerializedName("image") String image; // 이미지 url
+        @SerializedName("photos") String photos; // 스틸컷 이미지 url list
+        @SerializedName("videos") String videos; // 동영상 url list
         @SerializedName("audience_rating") float audience_rating; // 관람객 평점
         @SerializedName("genre") String genre; // 장르
         @SerializedName("duration") int duration; // 상영 시간
@@ -36,18 +38,21 @@ public class MovieRepo {
         @SerializedName("like") int like; // 좋아요 수
         @SerializedName("dislike") int dislike; // 싫어요 수
 
-        public Movie(int id, String title, float reservation_rate, int grade, String date, String thumb, int reservation_grade, float audience_rating,
-                String genre, int duration, int audience, String synopsis, String director, String actor, int like, int dislike) {
+        public Movie(int id, String title, float reservation_rate, int grade,
+                     String date, String thumb, int reservation_grade, float audience_rating,
+                     String genre, int duration, int audience, String synopsis,
+                     String director, String actor, int like, int dislike) {
             this.id = id;
             this.title = title;
             this.reservation_rate = reservation_rate;
             this.grade = grade;
+            this.date = date;
             this.thumb = thumb;
             this.reservation_grade = reservation_grade;
             this.audience_rating = audience_rating;
             this.genre = genre;
             this.duration = duration;
-            this. audience = audience;
+            this.audience = audience;
             this.synopsis = synopsis;
             this.director = director;
             this.actor = actor;
@@ -72,6 +77,8 @@ public class MovieRepo {
         public String getDate() { return date; }
         public String getThumb() { return thumb; }
         public String getImage() { return image; }
+        public String getPhotos() { return photos; }
+        public String getVideos() { return videos; }
         public float getAudience_rating() { return audience_rating; }
         public String getGenre() { return genre; }
         public int getDuration() { return duration; }

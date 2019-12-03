@@ -1,8 +1,7 @@
-package org.thk.mymovie;
+package org.thk.mymovie.review;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -13,7 +12,7 @@ public class ReviewRepo {
     @SerializedName("message") String message = null;
     @SerializedName("code") int code;
     @SerializedName("result")
-    List<Review> reviews = new ArrayList<>();
+    List<Review> reviews;
 
     public List<Review> getResults() { return reviews; }
     public static class Review {
@@ -25,7 +24,7 @@ public class ReviewRepo {
         @SerializedName("contents") String contents;
         @SerializedName("recommend") int recommend;
 
-        public Review(int review_id, int movie_id, String writer, String time, float rating, String contents, int recommend) {
+        public Review (int review_id, int movie_id, String writer, String time, float rating, String contents, int recommend) {
             this.review_id = review_id;
             this.movie_id = movie_id;
             this.writer = writer;

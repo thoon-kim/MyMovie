@@ -7,34 +7,19 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.gson.JsonObject;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
+import org.thk.mymovie.movie.MovieRepo;
+import org.thk.mymovie.review.ReviewRepo;
+import org.thk.mymovie.utils.DBHelper;
+import org.thk.mymovie.utils.NetworkStatus;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -74,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
 //        movieThread = new MovieThread(this, new Handler());
 //        movieThread.getMovieList(1);
         int movieCount = dbHelper.getCount(0);
-        Log.d("MA", "movieCount : " + movieCount);
+//        Log.d("MA", "movieCount : " + movieCount);
 
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -166,15 +151,14 @@ public class MainActivity extends AppCompatActivity {
                 public void onResponse(Call<MovieRepo> call, Response<MovieRepo> response) {
                     if (response.isSuccessful()) {
                         movieRepo = response.body();
-                        Log.d(TAG, "response.raw : " + response.raw());
+//                        Log.d(TAG, "response.raw : " + response.raw());
 
                         if (movieRepo.getCode() == 200) {
                             for (int i = 0; i < movieRepo.getResults().size(); i++) {
                                 MovieRepo.Movie movie = movieRepo.getResults().get(i);
-                                Log.d("MA MT getMovieList", movie.toString());
+//                                Log.d("MA MT getMovieList", movie.toString());
                                 dbHelper.setData(movie, 0);
                                 getMovieDetail(movie.getId());
-                                getReviews(movie.getId(), "all");
                             }
                         } else {
                             Log.e(TAG, "요청 실패 : " + movieRepo.getCode());
@@ -207,6 +191,7 @@ public class MainActivity extends AppCompatActivity {
 
                         if(movieRepo.getCode() == 200) {
                             final MovieRepo.Movie movie = movieRepo.getResults().get(0);
+//                            Log.d("MA getMovieDetail", movie.toString());
                             dbHelper.setData(movie, 1);
                         } else {
                             Log.e(TAG, "요청 실패 : " + movieRepo.getCode());
@@ -218,41 +203,6 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(Call<MovieRepo> call, Throwable t) {
                     Log.e(TAG, "영화 상세 정보 불러오기 실패 : " + t.getMessage());
-                    Log.e(TAG, "요청 메시지 : " + call.request());
-                }
-            });
-        }
-
-        public void getReviews(int id, String limit) {
-            super.run();
-            Retrofit client = new Retrofit.Builder().baseUrl("http://boostcourse-appapi.connect.or.kr:10000/movie/")
-                    .addConverterFactory(GsonConverterFactory.create()).build();
-            ReviewRepo.reviewInterface service = client.create(ReviewRepo.reviewInterface.class);
-            Call<ReviewRepo> call = service.getReviews(id, limit);
-
-            call.enqueue(new Callback<ReviewRepo>() {
-                @Override
-                public void onResponse(Call<ReviewRepo> call, Response<ReviewRepo> response) {
-                    if(response.isSuccessful()) {
-                        reviewRepo = response.body();
-                        Log.d(TAG, "response.raw : " + response.raw());
-
-                        if(movieRepo.getCode() == 200) {
-                            Log.d(TAG, "reviewItems size : " + String.valueOf(reviewRepo.getResults().size()));
-                            for (int i = 0; i < reviewRepo.getResults().size(); i++) {
-                                ReviewRepo.Review review = reviewRepo.getResults().get(i);
-                                dbHelper.setDataReview(review);
-                            }
-                        } else {
-                            Log.e(TAG, "요청 실패 : " + reviewRepo.getCode());
-                            Log.e(TAG, "메시지 : " + reviewRepo.getMessage());
-                        }
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<ReviewRepo> call, Throwable t) {
-                    Log.e(TAG, "리뷰정보 불러오기 실패 : " + t.getMessage());
                     Log.e(TAG, "요청 메시지 : " + call.request());
                 }
             });

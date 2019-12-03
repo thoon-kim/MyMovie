@@ -1,4 +1,4 @@
-package org.thk.mymovie;
+package org.thk.mymovie.utils;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

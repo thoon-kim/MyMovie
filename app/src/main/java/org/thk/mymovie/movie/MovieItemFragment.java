@@ -1,11 +1,10 @@
-package org.thk.mymovie;
+package org.thk.mymovie.movie;
 
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.google.gson.annotations.SerializedName;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import org.thk.mymovie.R;
 
 public class MovieItemFragment extends Fragment {
     ImageView imageThumb;
@@ -77,10 +72,5 @@ public class MovieItemFragment extends Fragment {
         textReservationRate.setText("예매율 " + movie.getReservation_rate() + "%");
         textGrade.setText(movie.getGrade() + "세 관람가");
         textDate.setText(movie.getDate());
-//        textIndex.setText(index  + ". ");
-//        textTitle.setText(title);
-//        textReservationRate.setText("예매율 " + reservation_rate + "%");
-//        textGrade.setText(grade + "세 관람가");
-//        textDate.setText(date);
     }
 }

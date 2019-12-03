@@ -1,4 +1,4 @@
-package org.thk.mymovie;
+package org.thk.mymovie.movie;
 
 import android.util.Log;
 
@@ -8,10 +8,10 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import java.util.ArrayList;
 
-public class MoviewPagerAdapter extends FragmentStatePagerAdapter {
+public class MoviePagerAdapter extends FragmentStatePagerAdapter {
     ArrayList<Fragment> items = new ArrayList<Fragment>();
 
-    public MoviewPagerAdapter(FragmentManager fm) {
+    public MoviePagerAdapter(FragmentManager fm) {
         super(fm);
     }
 

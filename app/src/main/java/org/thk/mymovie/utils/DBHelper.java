@@ -1,21 +1,17 @@
-package org.thk.mymovie;
+package org.thk.mymovie.utils;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
-import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
-import org.thk.mymovie.MovieRepo.Movie;
-import org.thk.mymovie.ReviewRepo.Review;
+import org.thk.mymovie.movie.MovieRepo.Movie;
+import org.thk.mymovie.review.ReviewRepo.Review;
 
 
 public class DBHelper extends SQLiteOpenHelper {
@@ -92,7 +88,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 cursor = db.rawQuery(sql, null);
 
                 if (cursor.getCount() > 0) {
-                    Log.d("DBHelper MOVIE", movie.getId() + " is existing in db");
+//                    Log.d("DBHelper MOVIE", movie.getId() + " is existing in db");
                 } else {
                     sql = "insert into " + TB_MOVIE
                             + "(_id, _title, _reservation_rate, _grade, _date, _image)"
@@ -104,7 +100,7 @@ public class DBHelper extends SQLiteOpenHelper {
                             + "\'" + movie.getDate() + "\', "
                             + "\'" + movie.getImage() + "\');";
                     db.execSQL(sql);
-                    Log.d("DBHelper", movie.toString() + " insertMovieList Success");
+//                    Log.d("DBHelper", movie.toString() + " insertMovieList Success");
                 }
                 break;
             case DETAIL:
@@ -114,7 +110,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 cursor = db.rawQuery(sql, null);
 
                 if (cursor.getCount() > 0) {
-                    Log.d("DBHelper DETAIL", movie.getId() + " is existing in db");
+//                    Log.d("DBHelper DETAIL", movie.getId() + " is existing in db");
                 } else {
                     sql = "insert into " + TB_DETAIL
                             + "(_id, _title, _reservation_rate, _grade, _date, _thumb, _reservation_grade, _audience_rating, "
@@ -136,8 +132,9 @@ public class DBHelper extends SQLiteOpenHelper {
                             + "\'" + movie.getActor() + "\', "
                             + movie.getLike() + ", "
                             + movie.getDislike() + ");";
+                    Log.d("DBHelper setData", movie.toString());
                     db.execSQL(sql);
-                    Log.d("DBHelper", "insertMovieDetail Success");
+//                    Log.d("DBHelper", "insertMovieDetail Success");
                 }
                 break;
         }
@@ -153,7 +150,7 @@ public class DBHelper extends SQLiteOpenHelper {
         cursor = db.rawQuery(sql, null);
 
         if (cursor.getCount() > 0) {
-            Log.d("DBHelper REVIEW", review.getReview_id() + " is existing in db");
+//            Log.d("DBHelper REVIEW", review.getReview_id() + " is existing in db");
         } else {
             sql = "insert into " + TB_REVIEW
                     + "(_review_id, _movie_id, _writer, _time, _rating, _contents, _recommend) "
@@ -166,7 +163,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     + "\'" + review.getContents() + "\', "
                     + review.getRecommend() + ");";
             db.execSQL(sql);
-            Log.d("DBHelper", "insertReviews Success");
+//            Log.d("DBHelper", "insertReviews Success");
         }
         db.close();
     }
